@@ -13,3 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    var video = document.getElementById('myVideo');
+    video.muted = true;
+    video.play().catch(function(error) {
+      console.log('Autoplay prevented: ' + error);
+    });
+  });
