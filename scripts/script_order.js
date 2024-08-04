@@ -162,3 +162,59 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
+
+// script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    const products = document.querySelectorAll('.product');
+    const totalCostElement = document.getElementById('total-cost');
+    const orderDetailsElement = document.getElementById('order-details');
+    const placeOrderButton = document.getElementById('place-order');
+    const cartIcon = document.getElementById('cart-icon');
+    const cartSummary = document.getElementById('cart-summary');
+    const cartClose = document.getElementById('cart-close');
+
+    products.forEach(product => {
+        const quantityInput = product.querySelector('input[type="number"]');
+        quantityInput.addEventListener('input', updateCart);
+    });
+
+    cartIcon.addEventListener('click', () => {
+        cartSummary.classList.toggle('open');
+    });
+
+    cartClose.addEventListener('click', () => {
+        cartSummary.classList.remove('open');
+    });
+
+    function updateCart() {
+        let totalCost = 0;
+        let orderSummary = '';
+        let orderDetailsHTML = '';
+
+        products.forEach(product => {
+            const price = parseFloat(product.getAttribute('data-price'));
+            const quantity = parseInt(product.querySelector('input[type="number"]').value);
+            if (quantity > 0) {
+                const productName = product.querySelector('h4 b').innerText;
+                const productCost = price * quantity;
+                totalCost += productCost;
+                orderSummary += `Product: ${productName} Quantity: ${quantity}, Total: ${productCost.toFixed(2)}\n`;
+                orderDetailsHTML += `<div class="order-item">${productName} (${quantity}) = ${productCost.toFixed(2)}</div>`;
+            }
+        });
+
+        orderDetailsElement.innerHTML = orderDetailsHTML;
+        totalCostElement.innerText = `Total Cost: ${totalCost.toFixed(2)}`;
+
+        placeOrderButton.onclick = () => {
+            if (totalCost > 0) {
+                const whatsappMessage = encodeURIComponent(`Order Summary:\n${orderSummary}Total Cost: ${totalCost.toFixed(2)}`);
+                const whatsappUrl = `https://wa.me/+255758523353?text=${whatsappMessage}`;
+                window.location.href = whatsappUrl;
+            } else {
+                alert('Please add some products to your cart.');
+            }
+        };
+    }
+});

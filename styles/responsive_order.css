@@ -233,10 +233,13 @@
 }
 
 @media (max-width: 360px) {
-    #cart-summary {
-        position: fixed;
-        width: 100%;
-        left: 20vw !important;
-        top: 16.3% !important;
+    .card {
+        width: 320px;
+    }
+
+    .row{
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
